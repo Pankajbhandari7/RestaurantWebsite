@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///D:/AppWizards/Convert%20to%20Next.js%20code%20%281%29/src/app/layout.tsx"],"sourcesContent":["import type { Metadata } from 'next'\nimport '../styles/index.css'\n\nexport const metadata: Metadata = {\n  title: 'FOODI Restaurant',\n  description: 'Savor the artistry where every dish is a culinary masterpiece',\n}\n\nexport default function RootLayout({\n  children,\n}: {\n  children: React.ReactNode\n}) {\n  return (\n    <html lang=\"en\">\n      <body>{children}</body>\n    </html>\n  )\n}\n"],"names":["metadata","title","description","RootLayout","children","lang"],"mappings":";;;;;;;;;AAGO,MAAMA,WAAqB;IAChCC,OAAO;IACPC,aAAa;AACf;AAEe,SAASC,WAAW,EACjCC,QAAQ,EAGT;IACC,qBACE,sSAAC;QAAKC,MAAK;kBACT,cAAA,sSAAC;sBAAMD;;;;;;;;;;;AAGb"}},
+    {"offset": {"line": 41, "column": 0}, "map": {"version":3,"sources":["file:///D:/AppWizards/Convert%20to%20Next.js%20code%20%281%29/node_modules/next/src/server/route-modules/app-page/vendored/rsc/react-jsx-dev-runtime.ts"],"sourcesContent":["module.exports = (\n  require('../../module.compiled') as typeof import('../../module.compiled')\n).vendored['react-rsc']!.ReactJsxDevRuntime\n"],"names":["module","exports","require","vendored","ReactJsxDevRuntime"],"mappings":"AAAAA,OAAOC,OAAO,GACZC,QAAQ,mKACRC,QAAQ,CAAC,YAAY,CAAEC,kBAAkB","ignoreList":[0]}}]
+}
