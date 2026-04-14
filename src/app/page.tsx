@@ -77,7 +77,7 @@ export default function HomePage() {
             {/* Main Hero Image */}
             <div className="relative z-10">
               <img
-                src="https://images.unsplash.com/photo-1675354358657-3604c4f101f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMGVhdGluZyUyMGZvb2QlMjBoYXBweSUyMGFzaWFufGVufDF8fHx8MTc3NjE2MTE0OXww&ixlib=rb-4.1.0&q=80&w=1080"
+                src="https://images.unsplash.com/photo-1675354358657-3604c4f101f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMGVhdGluZyUyMGZvb2QlMjBoYXBweSUyMGFzaWFufGVufDF8fHx8MTc3NjE2MTE0OXww&ixlib=rb-4.1.0&q=70&w=1080"
                 alt="Woman enjoying food"
                 className="w-full max-w-[450px] mx-auto object-cover rounded-full"
               />
@@ -126,7 +126,7 @@ export default function HomePage() {
           {/* Category 1 */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-32 h-32 bg-gradient-to-br from-green-50 to-green-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
-              <span className="text-5xl">🍜</span>
+              <span className="text-5xl"><img src='img1.png' alt="Main Dish" /></span>
             </div>
             <h3 className="font-semibold text-gray-900 mb-1">Main Dish</h3>
             <p className="text-sm text-gray-500">(86 dishes)</p>
@@ -135,7 +135,7 @@ export default function HomePage() {
           {/* Category 2 */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-32 h-32 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
-              <span className="text-5xl">🍳</span>
+              <span className="text-5xl"><img src='img2.png' alt="Break Fast" /></span>
             </div>
             <h3 className="font-semibold text-gray-900 mb-1">Break Fast</h3>
             <p className="text-sm text-gray-500">(12 break fast)</p>
@@ -144,7 +144,7 @@ export default function HomePage() {
           {/* Category 3 */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-32 h-32 bg-gradient-to-br from-pink-50 to-pink-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
-              <span className="text-5xl">🍰</span>
+              <span className="text-5xl"><img src='img3.png' alt="Dessert" /></span>
             </div>
             <h3 className="font-semibold text-gray-900 mb-1">Dessert</h3>
             <p className="text-sm text-gray-500">(48 dessert)</p>
@@ -153,7 +153,7 @@ export default function HomePage() {
           {/* Category 4 */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-32 h-32 bg-gradient-to-br from-purple-50 to-purple-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
-              <span className="text-5xl">🥤</span>
+              <span className="text-5xl"><img src='img4.png' alt="Browse All" /></span>
             </div>
             <h3 className="font-semibold text-gray-900 mb-1">Browse All</h3>
             <p className="text-sm text-gray-500">(255 Items)</p>
@@ -183,7 +183,7 @@ export default function HomePage() {
           <div className="bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow group cursor-pointer">
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1622922229376-b25fec9357aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+                src="img5.png"
                 alt="Fattoush salad"
                 className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -237,7 +237,7 @@ export default function HomePage() {
           <div className="bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow group cursor-pointer">
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1562629578-da26f0c738ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
+                src="img7.png"
                 alt="Egg vegi salad"
                 className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
               />
