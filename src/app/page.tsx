@@ -1,6 +1,101 @@
-import { Search, ShoppingCart, Play, Star, ChevronLeft, ChevronRight, Instagram, Facebook, Twitter, Youtube } from 'lucide-react';
+ 'use client';
+
+import { useMemo, useState } from 'react';
+import { Search, ShoppingCart, Play, Star, ChevronLeft, ChevronRight, Instagram, Facebook, Twitter, Youtube, X } from 'lucide-react';
+
+const categories = [
+  {
+    id: 1,
+    name: 'Main Dish',
+    countText: '(86 dishes)',
+    image: 'img1.png',
+    imageAlt: 'Main Dish',
+    backgroundClass: 'from-green-50 to-green-100',
+  },
+  {
+    id: 2,
+    name: 'Break Fast',
+    countText: '(12 break fast)',
+    image: 'img2.png',
+    imageAlt: 'Break Fast',
+    backgroundClass: 'from-yellow-50 to-yellow-100',
+  },
+  {
+    id: 3,
+    name: 'Dessert',
+    countText: '(48 dessert)',
+    image: 'img3.png',
+    imageAlt: 'Dessert',
+    backgroundClass: 'from-pink-50 to-pink-100',
+  },
+  {
+    id: 4,
+    name: 'Browse All',
+    countText: '(255 Items)',
+    image: 'img4.png',
+    imageAlt: 'Browse All',
+    backgroundClass: 'from-purple-50 to-purple-100',
+  },
+];
+
+const dishes = [
+  {
+    id: 1,
+    name: 'Fattoush salad',
+    description: 'Description of the item',
+    price: '$24.00',
+    rating: '4.9',
+    image: 'img5.png',
+    imageAlt: 'Fattoush salad',
+  },
+  {
+    id: 2,
+    name: 'Vegetable salad',
+    description: 'Description of the item',
+    price: '$26.00',
+    rating: '4.6',
+    image: 'https://images.unsplash.com/photo-1564093497595-593b96d80180?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600',
+    imageAlt: 'Vegetable salad',
+  },
+  {
+    id: 3,
+    name: 'Egg vegi salad',
+    description: 'Description of the item',
+    price: '$23.00',
+    rating: '4.5',
+    image: 'img7.png',
+    imageAlt: 'Egg vegi salad',
+  },
+];
 
 export default function HomePage() {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showRestaurantInfo, setShowRestaurantInfo] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [cartCount, setCartCount] = useState(0);
+
+  const handleExploreClick = () => {
+    setShowRestaurantInfo(true);
+    setTimeout(() => {
+      document.getElementById('restaurant-info')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  };
+
+  const filteredDishes = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+    if (!normalizedQuery) {
+      return dishes;
+    }
+
+    return dishes.filter((dish) => {
+      return (
+        dish.name.toLowerCase().includes(normalizedQuery) ||
+        dish.description.toLowerCase().includes(normalizedQuery)
+      );
+    });
+  }, [dishes, searchQuery]);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -26,18 +121,48 @@ export default function HomePage() {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <button className="w-10 h-10 rounded-full hover:bg-gray-50 flex items-center justify-center">
+            <button
+              onClick={() => setIsSearchOpen((prev) => !prev)}
+              aria-label="Toggle search"
+              className="w-10 h-10 rounded-full hover:bg-gray-50 flex items-center justify-center"
+            >
               <Search className="w-5 h-5 text-gray-600" />
             </button>
             <button className="w-10 h-10 rounded-full hover:bg-gray-50 flex items-center justify-center relative">
               <ShoppingCart className="w-5 h-5 text-gray-600" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-[#39DB4A] rounded-full"></span>
+              <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 bg-[#39DB4A] text-white text-[11px] font-semibold rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
             </button>
             <button className="hidden lg:block px-6 py-2.5 bg-[#39DB4A] text-white rounded-full text-[15px] font-medium hover:bg-[#32c441] transition-colors">
               Contact
             </button>
           </div>
         </div>
+        {isSearchOpen && (
+          <div className="max-w-[1440px] mx-auto px-8 lg:px-16 pb-4">
+            <div className="relative max-w-md ml-auto">
+              <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+              <input
+                autoFocus
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                type="text"
+                placeholder="Search dishes..."
+                className="w-full h-11 rounded-full border border-gray-200 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-[#39DB4A] focus:border-transparent"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Clear search"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
@@ -122,42 +247,43 @@ export default function HomePage() {
           <h2 className="text-4xl lg:text-[42px] font-bold text-gray-900">Popular Categories</h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
-          {/* Category 1 */}
-          <div className="flex flex-col items-center group cursor-pointer">
-            <div className="w-32 h-32 bg-gradient-to-br from-green-50 to-green-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
-              <span className="text-5xl"><img src='img1.png' alt="Main Dish" /></span>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              onClick={() =>
+                setSelectedCategoryId((previousId) =>
+                  previousId === category.id ? null : category.id,
+                )
+              }
+              className={`flex flex-col items-center group cursor-pointer rounded-3xl py-4 transition-all duration-300 ${
+                selectedCategoryId === category.id ? 'bg-gray-50 shadow-md' : ''
+              }`}
+            >
+              <div
+                className={`bg-gradient-to-br ${category.backgroundClass} rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-all duration-300 shadow-lg ${
+                  selectedCategoryId === category.id ? 'w-40 h-40' : 'w-32 h-32'
+                }`}
+              >
+                <span className="text-5xl"><img src={category.image} alt={category.imageAlt} /></span>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-1">{category.name}</h3>
+              <p className="text-sm text-gray-500">{category.countText}</p>
+              {selectedCategoryId === category.id && (
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setCartCount((previousCount) => previousCount + 1);
+                  }}
+                  className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold bg-[#39DB4A] text-white rounded-full hover:bg-[#32c441] transition-colors"
+                >
+                  <ShoppingCart className="w-3.5 h-3.5" />
+                  Add to Cart
+                </button>
+              )}
             </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Main Dish</h3>
-            <p className="text-sm text-gray-500">(86 dishes)</p>
-          </div>
-
-          {/* Category 2 */}
-          <div className="flex flex-col items-center group cursor-pointer">
-            <div className="w-32 h-32 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
-              <span className="text-5xl"><img src='img2.png' alt="Break Fast" /></span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Break Fast</h3>
-            <p className="text-sm text-gray-500">(12 break fast)</p>
-          </div>
-
-          {/* Category 3 */}
-          <div className="flex flex-col items-center group cursor-pointer">
-            <div className="w-32 h-32 bg-gradient-to-br from-pink-50 to-pink-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
-              <span className="text-5xl"><img src='img3.png' alt="Dessert" /></span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Dessert</h3>
-            <p className="text-sm text-gray-500">(48 dessert)</p>
-          </div>
-
-          {/* Category 4 */}
-          <div className="flex flex-col items-center group cursor-pointer">
-            <div className="w-32 h-32 bg-gradient-to-br from-purple-50 to-purple-100 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg">
-              <span className="text-5xl"><img src='img4.png' alt="Browse All" /></span>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-1">Browse All</h3>
-            <p className="text-sm text-gray-500">(255 Items)</p>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -179,87 +305,42 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Dish Card 1 */}
-          <div className="bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow group cursor-pointer">
-            <div className="relative">
-              <img
-                src="img5.png"
-                alt="Fattoush salad"
-                className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <button className="absolute top-4 right-4 w-10 h-10 bg-[#39DB4A] rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                ❤️
-              </button>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Fattoush salad</h3>
-              <p className="text-sm text-gray-500 mb-4">Description of the item</p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-gray-900">$24.00</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold text-gray-900">4.9</span>
+          {filteredDishes.map((dish) => (
+            <div
+              key={dish.id}
+              className="bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow group cursor-pointer"
+            >
+              <div className="relative">
+                <img
+                  src={dish.image}
+                  alt={dish.imageAlt}
+                  className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <button className="absolute top-4 right-4 w-10 h-10 bg-[#39DB4A] rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                  ❤️
+                </button>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{dish.name}</h3>
+                <p className="text-sm text-gray-500 mb-4">{dish.description}</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold text-gray-900">{dish.price}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="font-semibold text-gray-900">{dish.rating}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Dish Card 2 */}
-          <div className="bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow group cursor-pointer">
-            <div className="relative">
-              <img
-                src="https://images.unsplash.com/photo-1564093497595-593b96d80180?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600"
-                alt="Vegetable salad"
-                className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <button className="absolute top-4 right-4 w-10 h-10 bg-[#39DB4A] rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                ❤️
-              </button>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Vegetable salad</h3>
-              <p className="text-sm text-gray-500 mb-4">Description of the item</p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-gray-900">$26.00</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold text-gray-900">4.6</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Dish Card 3 */}
-          <div className="bg-white rounded-3xl overflow-hidden hover:shadow-2xl transition-shadow group cursor-pointer">
-            <div className="relative">
-              <img
-                src="img7.png"
-                alt="Egg vegi salad"
-                className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <button className="absolute top-4 right-4 w-10 h-10 bg-[#39DB4A] rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                ❤️
-              </button>
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Egg vegi salad</h3>
-              <p className="text-sm text-gray-500 mb-4">Description of the item</p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold text-gray-900">$23.00</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold text-gray-900">4.5</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
+        {filteredDishes.length === 0 && (
+          <p className="text-center text-gray-500 mt-8">
+            No dishes found for "{searchQuery}".
+          </p>
+        )}
       </section>
 
       {/* Testimonials */}
@@ -318,7 +399,10 @@ export default function HomePage() {
                 Rooted in passion, we curate unforgettable dining experiences and offer exceptional services, blending culinary artistry with warm hospitality.
               </p>
             </div>
-            <button className="px-8 py-4 bg-[#39DB4A] text-white rounded-full text-[16px] font-semibold hover:bg-[#32c441] transition-colors shadow-lg shadow-green-200">
+            <button
+              onClick={handleExploreClick}
+              className="px-8 py-4 bg-[#39DB4A] text-white rounded-full text-[16px] font-semibold hover:bg-[#32c441] transition-colors shadow-lg shadow-green-200"
+            >
               Explore
             </button>
           </div>
@@ -363,6 +447,53 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {showRestaurantInfo && (
+        <section id="restaurant-info" className="py-16 px-8 lg:px-16 max-w-[1440px] mx-auto">
+          <div className="bg-white border border-gray-100 rounded-3xl p-8 lg:p-10 shadow-sm">
+            <div className="mb-8">
+              <p className="text-[#FF6868] text-sm font-semibold mb-2 tracking-wider uppercase">About FOODI</p>
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Welcome to Our Restaurant</h2>
+              <p className="text-gray-600 text-lg leading-relaxed max-w-4xl">
+                FOODI is built around fresh ingredients, creative recipes, and warm hospitality. From everyday favorites to signature chef specials, we focus on making every meal memorable for you and your family.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="rounded-2xl bg-green-50 p-6">
+                <h3 className="font-bold text-gray-900 mb-2">Our Mission</h3>
+                <p className="text-sm text-gray-600">Serve quality food with consistency, speed, and care in every order.</p>
+              </div>
+              <div className="rounded-2xl bg-yellow-50 p-6">
+                <h3 className="font-bold text-gray-900 mb-2">Opening Hours</h3>
+                <p className="text-sm text-gray-600">Mon - Sun: 9:00 AM - 11:00 PM</p>
+              </div>
+              <div className="rounded-2xl bg-pink-50 p-6">
+                <h3 className="font-bold text-gray-900 mb-2">Location</h3>
+                <p className="text-sm text-gray-600">Downtown Food Street, New Zealand</p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Why Customers Love Us</h3>
+                <ul className="space-y-2 text-gray-600 text-sm">
+                  <li>- Freshly prepared dishes made daily</li>
+                  <li>- Fast delivery and online ordering support</li>
+                  <li>- Family-friendly atmosphere and service</li>
+                  <li>- Special seasonal menus and offers</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Contact & Reservations</h3>
+                <p className="text-sm text-gray-600 mb-2">Email: example@email.com</p>
+                <p className="text-sm text-gray-600 mb-2">Phone: +64 958 248 966</p>
+                <p className="text-sm text-gray-600">Book your table in advance for weekends and special events.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-100 py-16 px-8 lg:px-16">
